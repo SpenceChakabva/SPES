@@ -5,18 +5,18 @@ import { Badge } from '../components/ui/Badge';
 
 export const About: React.FC = () => {
   return (
-    <div className="max-w-5xl mx-auto py-16 px-6 animate-in fade-in slide-in-from-bottom-6 duration-1000">
-      <div className="flex flex-col items-center text-center mb-20">
+    <div className="max-w-5xl mx-auto animate-in fade-in slide-in-from-bottom-6 duration-1000">
+      <div className="flex flex-col items-center text-center mb-12 sm:mb-20">
         <Badge variant="info" className="mb-4">System Intelligence v2.4</Badge>
-        <h1 className="text-5xl sm:text-7xl font-display font-black text-forest dark:text-ivory-warm mb-8 tracking-tighter leading-[0.9]">
+        <h1 className="text-4xl sm:text-5xl lg:text-7xl font-display font-black text-forest dark:text-ivory-warm mb-6 sm:mb-8 tracking-tighter leading-[0.9]">
           Tactical<br />Sovereignty.
         </h1>
-        <p className="text-xl text-text-secondary dark:text-text-dark-secondary max-w-2xl leading-relaxed font-medium">
+        <p className="text-base sm:text-xl text-text-secondary dark:text-text-dark-secondary max-w-2xl leading-relaxed font-medium px-2">
           Thuthuka is a tactical infrastructure engine engineered to eliminate administrative friction for the high-performance UCT student. We don't just solve problems; we architect around them.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-12 sm:mb-20">
         {[
           {
             icon: <Shield size={24} />,
@@ -55,7 +55,7 @@ export const About: React.FC = () => {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-20">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-10 mb-12 sm:mb-20">
         <div className="flex flex-col justify-center">
           <h2 className="text-3xl font-display font-black text-forest dark:text-ivory-warm mb-6 leading-tight">
             Solving the <span className="text-terracotta italic">Administrative Vacuum.</span>
@@ -90,7 +90,7 @@ export const About: React.FC = () => {
         </Card>
       </div>
 
-      <div className="text-center p-12 bg-ivory-warm/30 dark:bg-forest-darkpale/40 rounded-[3rem] border border-ivory-deep dark:border-white/5">
+      <div className="text-center p-6 sm:p-12 bg-ivory-warm/30 dark:bg-forest-darkpale/40 rounded-2xl sm:rounded-[3rem] border border-ivory-deep dark:border-white/5">
         <h3 className="text-2xl font-bold mb-4 text-forest dark:text-ivory-warm">Smart Tackling. Sub-second Execution.</h3>
         <p className="text-text-secondary dark:text-text-dark-secondary max-w-lg mx-auto mb-8 text-[15px]">
           Thuthuka is not just an app; it's a statement on data sovereignty. Built with React, GSAP, and a relentless focus on solving the UCT experience.

@@ -25,14 +25,19 @@ export const Calendar: React.FC = () => {
 
   const allEvents = [
     ...events,
-    ...exams.map(e => ({
-      id: parseInt(e.id),
-      title: `EXAM: ${e.subject}`,
-      time: `${e.time} - ${parseInt(e.time.split(':')[0]) + 2}:00`,
-      location: e.venue,
-      type: 'exam' as const,
-      code: e.code
-    }))
+    ...exams.map((e) => {
+      const startTime = e.time ?? '00:00';
+      const endHour = String(parseInt(startTime.split(':')[0], 10) + 2).padStart(2, '0');
+      return {
+        id: parseInt(e.id, 10),
+        title: `EXAM: ${e.subject}`,
+        time: `${startTime} - ${endHour}:00`,
+        location: e.venue ?? 'TBC',
+        type: 'exam' as const,
+        code: e.code,
+        days: [] as string[],
+      };
+    }),
   ].sort((a, b) => a.time.localeCompare(b.time));
 
   useGSAP(() => {
@@ -84,35 +89,35 @@ export const Calendar: React.FC = () => {
   };
 
   return (
-    <div ref={containerRef} className="max-w-[1200px] mx-auto py-10 px-6 min-h-screen">
+    <div ref={containerRef} className="max-w-[1200px] mx-auto">
       
       {/* Header Section */}
-      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6 mb-12">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 sm:gap-6 mb-8 sm:mb-12">
         <div className="stagger-item">
           <div className="flex items-center gap-2 mb-2">
             <Badge variant="info" className="px-3 py-1">Active Semester</Badge>
             <div className="w-2 h-2 rounded-full bg-sage animate-pulse" />
           </div>
-          <h1 className="text-4xl sm:text-5xl font-display font-black text-forest dark:text-ivory-warm tracking-tighter leading-none mb-4">
-            Tactical<br />Deployment.
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-forest dark:text-ivory-warm tracking-tighter leading-none mb-3">
+            Tactical<br className="hidden sm:block" /> Deployment.
           </h1>
-          <p className="text-lg text-text-secondary dark:text-text-dark-secondary font-medium">
+          <p className="text-base sm:text-lg text-text-secondary dark:text-text-dark-secondary font-medium">
             {new Date().toLocaleDateString('en-ZA', { weekday: 'long', day: 'numeric', month: 'long' })}
           </p>
         </div>
-        
-        <div className="flex flex-wrap gap-3 stagger-item">
-          <Button variant="secondary" onClick={exportToICal} className="bg-white/40 border-none backdrop-blur-md shadow-sm">
-            <Share size={18} /> Export
+
+        <div className="flex flex-wrap gap-2 sm:gap-3 stagger-item w-full sm:w-auto">
+          <Button variant="secondary" size="sm" onClick={exportToICal} className="bg-white/40 border-none backdrop-blur-md shadow-sm flex-1 sm:flex-none">
+            <Share size={16} /> Export
           </Button>
-          <Button onClick={handleSync} disabled={isSyncing} className="sync-btn shadow-md px-8">
-            <RefreshCw size={18} className={isSyncing ? 'animate-spin' : ''} /> 
-            {isSyncing ? 'Syncing...' : 'Sync Timetable'}
+          <Button size="sm" onClick={handleSync} disabled={isSyncing} className="sync-btn shadow-md flex-1 sm:flex-none">
+            <RefreshCw size={16} className={isSyncing ? 'animate-spin' : ''} />
+            {isSyncing ? 'Syncing...' : 'Sync'}
           </Button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-10 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-6 lg:gap-10 items-start">
         
         {/* Main Schedule Column */}
         <div className="flex flex-col gap-6">
@@ -159,9 +164,9 @@ export const Calendar: React.FC = () => {
                             <div className="flex items-center justify-center sm:justify-start gap-2 mb-1">
                               <h3 className="text-lg font-bold text-text-primary dark:text-text-dark-primary">{event.title}</h3>
                               {event.type === 'exam' && <BookOpen size={14} className="text-terracotta" />}
-                              {'days' in event && (event as any).days?.length > 0 && (
+                              {event.days && event.days.length > 0 && (
                                 <div className="flex gap-1 ml-1">
-                                  {(event as any).days.map((d: string) => (
+                                  {event.days.map((d: string) => (
                                     <span key={d} className="text-[9px] font-black text-sage uppercase">{d}</span>
                                   ))}
                                 </div>
@@ -185,9 +190,9 @@ export const Calendar: React.FC = () => {
                            }`}>
                              {event.type}
                            </div>
-                           <button 
+                           <button
                             onClick={() => deleteEvent(event.id)}
-                            className="p-2 text-text-muted hover:text-clay-red transition-colors opacity-0 group-hover:opacity-100"
+                            className="p-2 text-text-muted hover:text-clay-red transition-colors sm:opacity-0 sm:group-hover:opacity-100"
                            >
                              <Trash2 size={16} />
                            </button>

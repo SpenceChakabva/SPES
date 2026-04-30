@@ -1,5 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { secureStorage } from './crypto';
+
+// ─── Domain Types ────────────────────────────────────────────────────────────
 
 export interface StudentProfile {
   faculty?: string;
@@ -10,6 +12,17 @@ export interface StudentProfile {
   registeredCredits?: number;
   apiKey?: string;
   apiProvider?: 'server' | 'anthropic' | 'openai';
+}
+
+export interface Exam {
+  id: string;
+  subject: string;
+  code?: string;
+  date: string;   // ISO date string, e.g. '2026-06-02'
+  time?: string;  // 24-hour time, e.g. '09:00'
+  venue?: string;
+  duration?: number; // minutes
+  notes?: string;
 }
 
 export interface Note {
@@ -35,61 +48,79 @@ export interface PlannerMessage {
   timestamp: string;
 }
 
-const PROFILE_KEY = 'thuthuka_profile';
-const NOTES_KEY = 'thuthuka_notes';
-const EVENTS_KEY = 'thuthuka_events';
-const EXAMS_KEY = 'thuthuka_exams_list';
-const PLANNER_KEY = 'thuthuka_planner_history';
+// ─── Storage Keys ─────────────────────────────────────────────────────────────
+
+const KEYS = {
+  PROFILE: 'thuthuka_profile',
+  NOTES: 'thuthuka_notes',
+  EVENTS: 'thuthuka_events',
+  EXAMS: 'thuthuka_exams_list',
+  PLANNER: 'thuthuka_planner_history',
+} as const;
+
+// ─── Generic storage helpers ──────────────────────────────────────────────────
+
+function readStorage<T>(key: string, fallback: T): T {
+  try {
+    const raw = secureStorage.getItem(key);
+    return raw ? (JSON.parse(raw) as T) : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+// ─── Main hook ────────────────────────────────────────────────────────────────
 
 export function useProfile() {
-  const [profile, setProfile] = useState<StudentProfile | null>(() => {
-    const stored = secureStorage.getItem(PROFILE_KEY);
-    return stored ? JSON.parse(stored) : null;
-  });
+  const [profile, setProfile] = useState<StudentProfile | null>(() =>
+    readStorage<StudentProfile | null>(KEYS.PROFILE, null)
+  );
 
-  const [notes, setNotes] = useState<Note[]>(() => {
-    const stored = secureStorage.getItem(NOTES_KEY);
-    return stored ? JSON.parse(stored) : [];
-  });
+  const [notes, setNotes] = useState<Note[]>(() =>
+    readStorage<Note[]>(KEYS.NOTES, [])
+  );
 
-  const [events, setEvents] = useState<CalendarEvent[]>(() => {
-    const stored = secureStorage.getItem(EVENTS_KEY);
-    return stored ? JSON.parse(stored) : [];
-  });
+  const [events, setEvents] = useState<CalendarEvent[]>(() =>
+    readStorage<CalendarEvent[]>(KEYS.EVENTS, [])
+  );
 
-  const [exams, setExams] = useState<any[]>(() => {
-    const stored = secureStorage.getItem(EXAMS_KEY);
-    return stored ? JSON.parse(stored) : [];
-  });
+  const [exams, setExams] = useState<Exam[]>(() =>
+    readStorage<Exam[]>(KEYS.EXAMS, [])
+  );
 
-  const [plannerHistory, setPlannerHistory] = useState<PlannerMessage[]>(() => {
-    const stored = secureStorage.getItem(PLANNER_KEY);
-    return stored ? JSON.parse(stored) : [];
-  });
+  const [plannerHistory, setPlannerHistory] = useState<PlannerMessage[]>(() =>
+    readStorage<PlannerMessage[]>(KEYS.PLANNER, [])
+  );
 
-  useEffect(() => {
-    secureStorage.setItem(PROFILE_KEY, JSON.stringify(profile));
-  }, [profile]);
+  // Persist on change
+  useEffect(() => { secureStorage.setItem(KEYS.PROFILE, JSON.stringify(profile)); }, [profile]);
+  useEffect(() => { secureStorage.setItem(KEYS.NOTES, JSON.stringify(notes)); }, [notes]);
+  useEffect(() => { secureStorage.setItem(KEYS.EVENTS, JSON.stringify(events)); }, [events]);
+  useEffect(() => { secureStorage.setItem(KEYS.EXAMS, JSON.stringify(exams)); }, [exams]);
+  useEffect(() => { secureStorage.setItem(KEYS.PLANNER, JSON.stringify(plannerHistory)); }, [plannerHistory]);
 
-  useEffect(() => {
-    secureStorage.setItem(NOTES_KEY, JSON.stringify(notes));
-  }, [notes]);
+  // ─── Computed selectors ──────────────────────────────────────────────────
 
-  useEffect(() => {
-    secureStorage.setItem(EVENTS_KEY, JSON.stringify(events));
-  }, [events]);
+  const now = new Date();
 
-  useEffect(() => {
-    secureStorage.setItem(EXAMS_KEY, JSON.stringify(exams));
-  }, [exams]);
+  const upcomingExams = useMemo(
+    () =>
+      exams
+        .filter((e) => new Date(e.date) > now)
+        .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()),
+    [exams] // eslint-disable-line react-hooks/exhaustive-deps
+  );
 
-  useEffect(() => {
-    secureStorage.setItem(PLANNER_KEY, JSON.stringify(plannerHistory));
-  }, [plannerHistory]);
+  const nextExam = upcomingExams[0] ?? null;
 
-  const updateProfile = (updates: Partial<StudentProfile>) => {
-    setProfile(prev => ({ ...prev, ...updates }));
-  };
+  const daysToNextExam = nextExam
+    ? Math.ceil((new Date(nextExam.date).getTime() - now.getTime()) / 86_400_000)
+    : null;
+
+  // ─── Mutations ────────────────────────────────────────────────────────────
+
+  const updateProfile = (updates: Partial<StudentProfile>) =>
+    setProfile((prev) => ({ ...prev, ...updates }));
 
   const clearProfile = () => {
     setProfile(null);
@@ -100,34 +131,52 @@ export function useProfile() {
     secureStorage.clear();
   };
 
-  const syncTimetable = () => {
-    const uctEvents: CalendarEvent[] = [
+  const addEvent = (event: Omit<CalendarEvent, 'id'>) =>
+    setEvents((prev) => [...prev, { ...event, id: Date.now() }]);
+
+  const deleteEvent = (id: number) =>
+    setEvents((prev) => prev.filter((e) => e.id !== id));
+
+  const updateEvent = (id: number, updates: Partial<CalendarEvent>) =>
+    setEvents((prev) => prev.map((e) => (e.id === id ? { ...e, ...updates } : e)));
+
+  const addExam = (exam: Omit<Exam, 'id'>) =>
+    setExams((prev) => [...prev, { ...exam, id: Date.now().toString() }]);
+
+  const deleteExam = (id: string) =>
+    setExams((prev) => prev.filter((e) => e.id !== id));
+
+  /** Prefill a representative demo timetable */
+  const syncTimetable = () =>
+    setEvents([
       { id: 1, title: 'CSC2001F Lecture', time: '09:00 - 09:45', location: 'RW James 3A', type: 'lecture' },
       { id: 2, title: 'MAM2000W Tutorial', time: '11:00 - 12:45', location: 'PD Hahn 4', type: 'tutorial' },
       { id: 3, title: 'Sports Club Meeting', time: '17:00 - 18:00', location: 'Sports Center', type: 'other' },
-    ];
-    setEvents(uctEvents);
-  };
-
-  const addEvent = (event: Omit<CalendarEvent, 'id'>) => {
-    const newEvent = { ...event, id: Date.now() };
-    setEvents(prev => [...prev, newEvent]);
-  };
-
-  const deleteEvent = (id: number) => {
-    setEvents(prev => prev.filter(e => e.id !== id));
-  };
-
-  const updateEvent = (id: number, updates: Partial<CalendarEvent>) => {
-    setEvents(prev => prev.map(e => e.id === id ? { ...e, ...updates } : e));
-  };
+    ]);
 
   return {
-    profile, updateProfile, clearProfile,
-    notes, setNotes,
-    events, setEvents, addEvent, deleteEvent, updateEvent,
-    exams, setExams,
-    plannerHistory, setPlannerHistory,
-    syncTimetable
+    // State
+    profile,
+    notes,
+    events,
+    exams,
+    plannerHistory,
+    // Computed
+    upcomingExams,
+    nextExam,
+    daysToNextExam,
+    // Setters
+    updateProfile,
+    clearProfile,
+    setNotes,
+    setEvents,
+    addEvent,
+    deleteEvent,
+    updateEvent,
+    setExams,
+    addExam,
+    deleteExam,
+    setPlannerHistory,
+    syncTimetable,
   };
 }
