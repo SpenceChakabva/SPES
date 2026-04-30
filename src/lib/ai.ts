@@ -46,7 +46,7 @@ export function isAIError(err: unknown): err is AIError {
 
 // ─── Rate limiting ────────────────────────────────────────────────────────────
 
-const RATE_KEY = 'thuthuka_rate_log';
+const RATE_KEY = 'spes_rate_log';
 const MAX_REQUESTS_PER_HOUR = 30;
 const ONE_HOUR_MS = 3_600_000;
 
@@ -157,9 +157,9 @@ export function buildContext(
 
 // ─── System prompt builder ────────────────────────────────────────────────────
 
-/** Generate a rich system prompt for the Thuthuka Study Planner. */
+/** Generate a rich system prompt for the Spes AI Study Planner. */
 export function buildSystemPrompt(profile: StudentProfile | null): string {
-  const baseRole = `You are the Thuthuka Synthetic Intelligence — a sharp, tactical academic planning assistant built for UCT students. You are warm but direct. You use plain language and avoid filler. Format responses with clear structure (headers, bullet points) when helpful. Keep responses focused and actionable.`;
+  const baseRole = `You are Spes — a smart academic planning assistant built for UCT students. You are warm but direct. You use plain language and avoid filler. Format responses with clear structure (headers, bullet points) when helpful. Keep responses focused and actionable.`;
 
   if (!profile) return baseRole;
 

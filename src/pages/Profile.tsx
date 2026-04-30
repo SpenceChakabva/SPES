@@ -36,17 +36,17 @@ export const Profile: React.FC = () => {
 
   const handleExport = () => {
     const data = {
-      thuthuka_profile: JSON.parse(secureStorage.getItem('thuthuka_profile') || 'null'),
-      thuthuka_notes: JSON.parse(secureStorage.getItem('thuthuka_notes') || '[]'),
-      thuthuka_events: JSON.parse(secureStorage.getItem('thuthuka_events') || '[]'),
-      thuthuka_exams_list: JSON.parse(secureStorage.getItem('thuthuka_exams_list') || '[]'),
+      spes_profile: JSON.parse(secureStorage.getItem('spes_profile') || 'null'),
+      spes_notes: JSON.parse(secureStorage.getItem('spes_notes') || '[]'),
+      spes_events: JSON.parse(secureStorage.getItem('spes_events') || '[]'),
+      spes_exams_list: JSON.parse(secureStorage.getItem('spes_exams_list') || '[]'),
     };
 
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `thuthuka_backup_${new Date().toISOString().split('T')[0]}.json`;
+    link.download = `spes_backup_${new Date().toISOString().split('T')[0]}.json`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -60,10 +60,10 @@ export const Profile: React.FC = () => {
     reader.onload = (event) => {
       try {
         const data = JSON.parse(event.target?.result as string);
-        if (data.thuthuka_profile) secureStorage.setItem('thuthuka_profile', JSON.stringify(data.thuthuka_profile));
-        if (data.thuthuka_notes) secureStorage.setItem('thuthuka_notes', JSON.stringify(data.thuthuka_notes));
-        if (data.thuthuka_events) secureStorage.setItem('thuthuka_events', JSON.stringify(data.thuthuka_events));
-        if (data.thuthuka_exams_list) secureStorage.setItem('thuthuka_exams_list', JSON.stringify(data.thuthuka_exams_list));
+        if (data.spes_profile) secureStorage.setItem('spes_profile', JSON.stringify(data.spes_profile));
+        if (data.spes_notes) secureStorage.setItem('spes_notes', JSON.stringify(data.spes_notes));
+        if (data.spes_events) secureStorage.setItem('spes_events', JSON.stringify(data.spes_events));
+        if (data.spes_exams_list) secureStorage.setItem('spes_exams_list', JSON.stringify(data.spes_exams_list));
 
         alert('Data imported successfully. Refreshing page...');
         window.location.reload();
@@ -117,8 +117,8 @@ export const Profile: React.FC = () => {
 
           <div className="flex flex-col gap-1.5">
             <label className="text-[11px] font-black uppercase tracking-widest text-text-muted">Registered Credits</label>
-            <Input 
-              type="number" 
+            <Input
+              type="number"
               placeholder="e.g. 120"
               value={formData.registeredCredits || ''}
               onChange={(e) => handleChange('registeredCredits', parseInt(e.target.value) || 0)}
@@ -143,7 +143,7 @@ export const Profile: React.FC = () => {
               <label className="text-[11px] font-black uppercase tracking-widest text-text-muted">Monthly Budget</label>
               <span className="text-sm font-bold text-forest dark:text-ivory-warm">R{formData.budget?.toLocaleString() || 4500}</span>
             </div>
-            <Slider 
+            <Slider
               min={1000} max={12000} step={100}
               value={formData.budget || 4500}
               onChange={(e) => handleChange('budget', parseInt(e.target.value))}
@@ -195,11 +195,10 @@ export const Profile: React.FC = () => {
               <button
                 key={opt.id}
                 onClick={() => handleChange('apiProvider', opt.id)}
-                className={`flex-1 flex items-start gap-3 p-4 rounded-2xl border-2 transition-all text-left ${
-                  (formData.apiProvider || 'server') === opt.id
-                    ? 'border-terracotta bg-terracotta/5 shadow-sm'
-                    : 'border-ivory-deep dark:border-dark-border bg-white dark:bg-dark-surface hover:border-terracotta/40'
-                }`}
+                className={`flex-1 flex items-start gap-3 p-4 rounded-2xl border-2 transition-all text-left ${(formData.apiProvider || 'server') === opt.id
+                  ? 'border-terracotta bg-terracotta/5 shadow-sm'
+                  : 'border-ivory-deep dark:border-dark-border bg-white dark:bg-dark-surface hover:border-terracotta/40'
+                  }`}
               >
                 <opt.icon size={18} className="text-terracotta shrink-0 mt-0.5" />
                 <div>
@@ -255,11 +254,11 @@ export const Profile: React.FC = () => {
             <Button variant="secondary" size="sm" onClick={() => fileInputRef.current?.click()} className="bg-white dark:bg-dark-card shadow-sm border-none flex items-center gap-2">
               <Upload size={16} /> Import JSON
             </Button>
-            <input 
-              type="file" 
-              ref={fileInputRef} 
-              onChange={handleImport} 
-              className="hidden" 
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleImport}
+              className="hidden"
               accept=".json"
             />
             <Button variant="danger" size="sm" onClick={handleClear} className="flex items-center gap-2 ml-auto shadow-sm">

@@ -12,7 +12,7 @@ export const About: React.FC = () => {
           Made for<br />UCT.
         </h1>
         <p className="text-base sm:text-xl text-text-secondary dark:text-text-dark-secondary max-w-2xl leading-relaxed font-medium px-2">
-          Thuthuka is a student companion built to take the pain out of university admin. We handle the paperwork side of your degree so you can focus on the work that actually matters.
+          Spes is a student companion built to take the pain out of university admin. We handle the paperwork side of your degree so you can focus on the work that actually matters.
         </p>
       </div>
 

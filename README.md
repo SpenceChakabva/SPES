@@ -1,57 +1,51 @@
 # Thuthuka — Tactical UCT Infrastructure
 
 Privacy-first academic engine for high-performance UCT students. Manage your schedule, notes, exams, funding, and study plans with zero server-side tracking.
+# Spes — Tactical UCT Infrastructure
 
-## Features
+Spes is a high-performance student companion designed specifically for the University of Cape Town (UCT) environment. It handles the administrative friction of student life—from verifying NSFAS-compliant accommodation to generating tactical exam study plans—all while keeping your data strictly local and private.
 
-| Feature | Description |
-|---------|-------------|
-| **AI Study Planner** | Chat-based study advisor powered by Claude. Generates personalised study plans, exam strategies, and weekly schedules. |
-| **Encrypted Storage** | All data encrypted at rest using AES-256-GCM via the Web Crypto API. Data never leaves your browser. |
-| **Exam Planner** | Parse timetables, track papers, and plan revision. |
-| **Schedule Manager** | View and manage your weekly course timetable. Export to `.ics`. |
-| **Accommodation Checker** | Verify off-campus housing listings against known databases. |
-| **NSFAS Calculator** | Calculate your funding gap and find bursary opportunities. |
-| **Scratchpad** | Quick notes for lectures, admin, and life. |
-| **Data Portability** | Export/import all data as JSON. Move between devices freely. |
-| **Dark Mode** | Full light/dark theme support. |
+## ── Tactical Pillars
 
-## Tech Stack
+1.  **Accommodation Checker**: Verify property listings against the UCT OCSAS accredited list and NSFAS price caps.
+2.  **Exam Planner**: Parse your timetable, analyze study density, and generate a 1-click syncable iCalendar schedule.
+3.  **SI Planner**: A locally-aware Synthetic Intelligence that understands your degree context and provides tactical advice.
+4.  **Sovereignty**: Zero tracking. Zero clouds. Your data stays in your browser's encrypted sandbox.
 
-- **Frontend**: React 19, TypeScript, Vite
-- **Styling**: Tailwind CSS, GSAP animations
-- **Storage**: Encrypted localStorage (AES-256-GCM via Web Crypto API)
-- **AI**: Claude API via Vercel serverless function
-- **Deployment**: Vercel (static SPA + serverless API)
+## ── Tech Stack
 
-## Getting Started
+- **Framework**: React 19 + Vite 8
+- **Styling**: Vanilla CSS (Tactical Design System)
+- **Animations**: GSAP + Framer Motion
+- **AI Engine**: Anthropic Claude (via secure local proxy)
+- **Storage**: Local-first encrypted persistence
 
-### Prerequisites
+## ── Quick Start
 
-- Node.js 18+
-- npm or yarn
-
-### Install
-
+### 1. Clone the repo
 ```bash
-git clone https://github.com/your-username/thuthuka.git
-cd thuthuka
-npm install
+git clone https://github.com/your-username/spes.git
+cd spes
 ```
 
-### Environment Variables
-
-Copy the example env file and add your Anthropic API key:
-
-```bash
-cp .env.example .env.local
-```
-
+### 2. Setup Environment
+Create a `.env` file in the root:
 ```env
-ANTHROPIC_API_KEY=sk-ant-your-key-here
+ANTHROPIC_API_KEY=your_key_here
 ```
 
-Get a key at [console.anthropic.com](https://console.anthropic.com/).
+### 3. Install & Run
+```bash
+npm install
+npm run dev
+```
+
+## ── Philosophy
+
+University admin is a black hole. **Spes** is the bridge. Built for students who value speed, privacy, and sub-second execution.
+
+---
+*Spes. Your UCT, your move.*
 
 The AI Planner works without a key — it will show a helpful error message prompting configuration.
 

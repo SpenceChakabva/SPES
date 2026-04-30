@@ -69,7 +69,7 @@ export const Calendar: React.FC = () => {
 
   const exportToICal = () => {
     if (allEvents.length === 0) return;
-    let icsContent = "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Thuthuka//UCT Schedule//EN\n";
+    let icsContent = "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Spes//UCT Schedule//EN\n";
     allEvents.forEach(event => {
       const date = new Date().toISOString().split('T')[0].replace(/-/g, '');
       const startTime = event.time.split(' - ')[0].replace(':', '');

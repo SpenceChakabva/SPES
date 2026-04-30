@@ -57,13 +57,13 @@ export const Sidebar: React.FC = () => {
       <Link
         to="/"
         className="flex items-center gap-2.5 px-5 py-6 group no-underline shrink-0"
-        aria-label="Thuthuka home"
+        aria-label="Spes home"
       >
         <div className="w-8 h-8 bg-terracotta rounded-xl flex items-center justify-center text-ivory font-black text-sm group-hover:scale-110 transition-transform duration-fast ease-spring shadow-md">
-          T
+          S
         </div>
         <div className="font-display text-xl font-bold text-forest dark:text-ivory-warm tracking-tighter leading-none">
-          THUTHUKA
+          SPES
         </div>
       </Link>
 

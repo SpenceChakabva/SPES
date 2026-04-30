@@ -4,15 +4,15 @@
  * Architecture:
  *  1. On first visit, a random 16-byte salt is generated and persisted.
  *  2. An AES-GCM-256 key is derived from the salt via PBKDF2 (100 000 iterations).
- *  3. All thuthuka_* data is encrypted before writing to localStorage.
+ *  3. All spes_* data is encrypted before writing to localStorage.
  *  4. On app startup, encrypted values are decrypted into an in-memory cache.
  *  5. Reads are synchronous (from cache); writes encrypt asynchronously.
  *  6. Graceful fallback: if crypto is unavailable, plaintext is used.
  */
 
-const SALT_KEY = 'thuthuka_enc_salt';
+const SALT_KEY = 'spes_enc_salt';
 const ENC_PREFIX = 'enc:';
-const EXCLUDED_KEYS = new Set([SALT_KEY, 'thuthuka_consent', 'thuthuka_rate_log']);
+const EXCLUDED_KEYS = new Set([SALT_KEY, 'spes_consent', 'spes_rate_log']);
 
 class SecureStorage {
   private cache = new Map<string, string>();
@@ -32,7 +32,7 @@ class SecureStorage {
 
       for (let i = 0; i < localStorage.length; i++) {
         const k = localStorage.key(i);
-        if (!k || !k.startsWith('thuthuka_') || EXCLUDED_KEYS.has(k)) continue;
+        if (!k || !k.startsWith('spes_') || EXCLUDED_KEYS.has(k)) continue;
 
         const raw = localStorage.getItem(k)!;
 
@@ -55,7 +55,7 @@ class SecureStorage {
       // Fallback: populate cache from raw localStorage
       for (let i = 0; i < localStorage.length; i++) {
         const k = localStorage.key(i);
-        if (!k || !k.startsWith('thuthuka_') || EXCLUDED_KEYS.has(k)) continue;
+        if (!k || !k.startsWith('spes_') || EXCLUDED_KEYS.has(k)) continue;
         const raw = localStorage.getItem(k)!;
         this.cache.set(k, raw.startsWith(ENC_PREFIX) ? '' : raw);
       }
@@ -86,12 +86,12 @@ class SecureStorage {
     localStorage.removeItem(key);
   }
 
-  /** Clear all encrypted thuthuka data. */
+  /** Clear all encrypted spes data. */
   clear(): void {
     const toRemove: string[] = [];
     for (let i = 0; i < localStorage.length; i++) {
       const k = localStorage.key(i);
-      if (k && k.startsWith('thuthuka_') && !EXCLUDED_KEYS.has(k)) {
+      if (k && k.startsWith('spes_') && !EXCLUDED_KEYS.has(k)) {
         toRemove.push(k);
       }
     }
@@ -127,7 +127,7 @@ class SecureStorage {
     return crypto.subtle.deriveKey(
       {
         name: 'PBKDF2',
-        salt: new TextEncoder().encode('thuthuka-sovereignty-engine'),
+        salt: new TextEncoder().encode('spes-uct-engine'),
         iterations: 100_000,
         hash: 'SHA-256',
       },

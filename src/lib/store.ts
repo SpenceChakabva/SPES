@@ -51,11 +51,11 @@ export interface PlannerMessage {
 // ─── Storage Keys ─────────────────────────────────────────────────────────────
 
 const KEYS = {
-  PROFILE: 'thuthuka_profile',
-  NOTES: 'thuthuka_notes',
-  EVENTS: 'thuthuka_events',
-  EXAMS: 'thuthuka_exams_list',
-  PLANNER: 'thuthuka_planner_history',
+  PROFILE: 'spes_profile',
+  NOTES: 'spes_notes',
+  EVENTS: 'spes_events',
+  EXAMS: 'spes_exams_list',
+  PLANNER: 'spes_planner_history',
 } as const;
 
 // ─── Generic storage helpers ──────────────────────────────────────────────────

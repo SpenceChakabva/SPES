@@ -1,6 +1,6 @@
-# Thuthuka — Complete UI/UX Design Specification
+# Spes — Complete UI/UX Design Specification
 
-> *Thuthuka* (isiZulu / isiXhosa): *"to develop, to grow, to progress, to flourish."*  
+> *Spes* (Latin): *"Hope."* Derived from UCT's motto *Spes Bona* (Good Hope).
 > From the Nguni root *-thuth-* — forward motion, upward development.  
 > A word that belongs to the continent this tool was built for.
 
@@ -8,7 +8,7 @@
 
 ## 0. Why This Name
 
-UCT sits at the southern tip of Africa. It draws students from Limpopo, from Zimbabwe, from the Eastern Cape — people who arrive in Cape Town with everything stacked against them and still show up on day one. The Zulu and Xhosa word *thuthuka* does not mean "to succeed in spite of." It means to grow as a natural condition — a plant reaching toward light. It is not triumphant. It is quiet and inevitable.
+UCT sits at the southern tip of Africa, under the watch of Table Mountain and the promise of *Spes Bona*. It draws students from across the continent — people who arrive in Cape Town with everything stacked against them and still show up on day one. Spes is not just an app; it is a manifestation of that hope — a tactical tool to ensure that progress is quiet, inevitable, and powered by pure competence.
 
 The name carries no English translation baggage, no startup clichés, no geographic lock-in. It says: *you are already growing. this tool is for that process.*
 
@@ -20,9 +20,9 @@ Sub-tagline variant: *"From admission to graduation, one tool."*
 
 ## 1. Vision & Product Philosophy
 
-### What Thuthuka Is
+### What Spes Is
 
-Thuthuka is a four-tool student companion for UCT students, unified under a single student profile. It solves:
+Spes is a four-tool student companion for UCT students, unified under a single student profile. It solves:
 
 1. **Accommodation Checker** — verify listings, flag NSFAS compliance, detect scams against the OCSAS accredited list
 2. **Exam Planner** — parse timetables, analyse density, generate personalised study plans, export to calendar
@@ -32,7 +32,7 @@ Thuthuka is a four-tool student companion for UCT students, unified under a sing
 ### Design Principles
 
 **Principle 1: African warmth, not Western tech coldness.**  
-Too many "student tools" feel like SaaS dashboards built for Silicon Valley CTOs. Thuthuka is warm, direct, and human. The visual language draws from the earthy, sun-burnt palette of the Western Cape landscape — terracotta, warm ivory, deep forest green — not the cold blues of enterprise software.
+Too many "student tools" feel like SaaS dashboards built for Silicon Valley CTOs. Spes is warm, direct, and human. The visual language draws from the earthy, sun-burnt palette of the Western Cape landscape — terracotta, warm ivory, deep forest green — not the cold blues of enterprise software.
 
 **Principle 2: Complexity inside, simplicity outside.**  
 The logic underneath is sophisticated — NSFAS policy modelling, OCSAS verification, iCalendar generation. The interface shows none of this. Every screen is one task, one action, one answer.
@@ -63,7 +63,7 @@ Logomark alternative: A stylised seedling — a single curved stem with two leav
 
 ### 2.2 Colour System
 
-Thuthuka uses an **African earth palette** — grounded, warm, and distinct from any other student tool on the continent.
+Spes uses an **African earth palette** — grounded, warm, and distinct from any other student tool on the continent.
 
 ```css
 /* ── Core ── */
@@ -282,7 +282,7 @@ Stored in `localStorage` as JSON. No server, no auth. Expiry: 1 year.
 
 **Subheadline:**  
 DM Sans, 18px, weight 400, `--text-secondary`, max-width 400px, line-height 1.6.  
-Copy: *"From finding a flat to planning your finals — Thuthuka handles the admin so you can focus on what matters."*
+Copy: *"From finding a flat to planning your finals — Spes handles the admin so you can focus on what matters."*
 
 **Primary CTA button:**
 ```css
@@ -896,9 +896,9 @@ function generateICS(studyDays: StudyDay[], exams: Exam[]): string {
   const lines: string[] = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
-    'PRODID:-//Thuthuka//Study Plan//EN',
+    'PRODID:-//Spes//Study Plan//EN',
     'CALSCALE:GREGORIAN',
-    'X-WR-CALNAME:Thuthuka Study Plan',
+    'X-WR-CALNAME:Spes Study Plan',
     'X-WR-TIMEZONE:Africa/Johannesburg',
   ];
 
@@ -1071,7 +1071,7 @@ Do not use clichés like "passionate about" or "dream of becoming".`;
 │                                                          │
 │  About your data                                         │
 │  Everything is stored on your device only.              │
-│  Thuthuka does not collect, store, or transmit          │
+│  Spes does not collect, store, or transmit          │
 │  any personal information.                              │
 │                                                          │
 │  [Clear all data]                                        │
@@ -1709,7 +1709,7 @@ That story gets you in the room. The .ics export, the OCSAS verification logic, 
 
 ---
 
-*Thuthuka. Your UCT, your move.*
+*Spes. Your UCT, your move.*
 
 ---
 

@@ -175,7 +175,7 @@ export const Landing: React.FC = () => {
             {!isSettingUp && (
               <div ref={introRef} className="col-start-1 row-start-1 w-full flex flex-col items-center lg:items-start">
                 <p className="text-base sm:text-lg md:text-xl text-text-secondary dark:text-text-dark-secondary max-w-[480px] leading-relaxed mb-8 stagger-item">
-                  Managing your UCT degree is a full-time job. Thuthuka handles the admin side so you can focus on the academics.
+                  Managing your UCT degree is a full-time job. Spes handles the admin side so you can focus on the academics.
                 </p>
                 <div className="flex flex-wrap items-center gap-3 mt-8 stagger-item">
                   {profile ? (

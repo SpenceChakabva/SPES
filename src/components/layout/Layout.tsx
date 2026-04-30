@@ -11,7 +11,7 @@ import { useGSAP } from '@gsap/react';
 
 const SIDEBAR_WIDTH = 220;
 const DESKTOP_BREAKPOINT = 1024;
-const CONSENT_KEY = 'thuthuka_consent';
+const CONSENT_KEY = 'spes_consent';
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
@@ -112,7 +112,7 @@ export const Layout: React.FC = () => {
           }`}
         >
           <div className="max-w-[1200px] mx-auto flex flex-col sm:flex-row justify-between items-center gap-2 opacity-50">
-            <span>© 2026 Thuthuka</span>
+            <span>© 2026 Spes</span>
             <div className="flex gap-4">
               <Link to="/about" className="hover:text-terracotta transition-colors underline decoration-dotted">
                 About
