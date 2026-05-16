@@ -15,10 +15,16 @@ export const DatePicker: React.FC<DatePickerProps> = ({ label, className = '', .
         </div>
         <input
           type="date"
-          className="w-full h-12 pl-12 pr-4 bg-ivory dark:bg-ivory-dark border-2 border-ivory-deep dark:border-forest-darkpale rounded-xl font-body text-[15px] text-text-primary dark:text-text-dark-primary transition-all duration-fast ease-out focus:outline-none focus:border-terracotta focus:ring-4 focus:ring-terracotta/10 appearance-none cursor-pointer"
+          className="w-full h-12 pl-12 pr-4 bg-white dark:bg-dark-surface border-2 border-ivory-deep dark:border-dark-border rounded-xl font-body text-[15px] text-text-primary dark:text-text-dark-primary transition-all duration-fast ease-out focus:outline-none focus:border-terracotta focus:ring-4 focus:ring-terracotta/10 appearance-none cursor-pointer"
           {...props}
         />
         <style>{`
+          input[type="date"] {
+            color-scheme: light;
+          }
+          .dark input[type="date"] {
+            color-scheme: dark;
+          }
           input[type="date"]::-webkit-calendar-picker-indicator {
             position: absolute;
             left: 0;
